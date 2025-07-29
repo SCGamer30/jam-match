@@ -15,6 +15,7 @@ export interface User {
   email: string;
   name: string;
   bio?: string;
+  primary_role: "drummer" | "guitarist" | "bassist" | "singer" | "other";
   instruments: string[];
   genres: string[];
   experience: "beginner" | "intermediate" | "advanced" | "professional";
@@ -28,7 +29,10 @@ export interface User {
 export interface Band {
   id: string;
   name?: string;
-  member_ids: string[];
+  drummer_id: string;
+  guitarist_id: string;
+  bassist_id: string;
+  singer_id: string;
   status: "active" | "inactive" | "disbanded";
   compatibility_data: Record<string, unknown>;
   formation_date: string;

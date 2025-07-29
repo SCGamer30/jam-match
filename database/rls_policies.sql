@@ -27,8 +27,8 @@ CREATE POLICY "Users can view band member profiles" ON users
     FOR SELECT USING (
         EXISTS (
             SELECT 1 FROM bands b
-            WHERE auth.uid() = ANY(b.member_ids)
-              AND users.id = ANY(b.member_ids)
+            WHERE (auth.uid() IN (b.drummer_id, b.guitarist_id, b.bassist_id, b.singer_id))
+              AND (users.id IN (b.drummer_id, b.guitarist_id, b.bassist_id, b.singer_id))
         )
     );
 
@@ -43,7 +43,7 @@ CREATE POLICY "Users can insert their own profile" ON users
 -- Bands table policies
 -- Users can view bands they are members of
 CREATE POLICY "Users can view their bands" ON bands
-    FOR SELECT USING (auth.uid() = ANY(member_ids));
+    FOR SELECT USING (auth.uid() IN (drummer_id, guitarist_id, bassist_id, singer_id));
 
 -- Only the system can create bands (through matching algorithm)
 -- This will be handled by service role key in backend
@@ -52,7 +52,7 @@ CREATE POLICY "System can create bands" ON bands
 
 -- Band members can update band information (like name)
 CREATE POLICY "Band members can update band info" ON bands
-    FOR UPDATE USING (auth.uid() = ANY(member_ids));
+    FOR UPDATE USING (auth.uid() IN (drummer_id, guitarist_id, bassist_id, singer_id));
 
 -- Messages table policies
 -- Users can view messages in bands they are members of
@@ -61,7 +61,7 @@ CREATE POLICY "Users can view messages in their bands" ON messages
         EXISTS (
             SELECT 1 FROM bands b
             WHERE b.id = messages.band_id
-              AND auth.uid() = ANY(b.member_ids)
+              AND auth.uid() IN (b.drummer_id, b.guitarist_id, b.bassist_id, b.singer_id)
         )
     );
 
@@ -72,7 +72,7 @@ CREATE POLICY "Users can send messages to their bands" ON messages
         AND EXISTS (
             SELECT 1 FROM bands b
             WHERE b.id = messages.band_id
-              AND auth.uid() = ANY(b.member_ids)
+              AND auth.uid() IN (b.drummer_id, b.guitarist_id, b.bassist_id, b.singer_id)
         )
     );
 

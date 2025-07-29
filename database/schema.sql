@@ -10,6 +10,7 @@ CREATE TABLE users (
     email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     bio TEXT,
+    primary_role TEXT NOT NULL CHECK (primary_role IN ('drummer', 'guitarist', 'bassist', 'singer', 'other')),
     instruments TEXT[] DEFAULT '{}',
     genres TEXT[] DEFAULT '{}',
     experience TEXT CHECK (experience IN ('beginner', 'intermediate', 'advanced', 'professional')),
@@ -25,6 +26,7 @@ CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_location ON users(location);
 CREATE INDEX idx_users_experience ON users(experience);
 CREATE INDEX idx_users_profile_completed ON users(profile_completed);
+CREATE INDEX idx_users_primary_role ON users(primary_role);
 CREATE INDEX idx_users_instruments ON users USING GIN(instruments);
 CREATE INDEX idx_users_genres ON users USING GIN(genres);
 
@@ -32,19 +34,32 @@ CREATE INDEX idx_users_genres ON users USING GIN(genres);
 CREATE TABLE bands (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT,
-    member_ids UUID[] NOT NULL DEFAULT '{}',
+    drummer_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    guitarist_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    bassist_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    singer_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     status TEXT DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'disbanded')),
     compatibility_data JSONB DEFAULT '{}',
     formation_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    CONSTRAINT bands_member_count CHECK (array_length(member_ids, 1) >= 3 AND array_length(member_ids, 1) <= 4)
+    CONSTRAINT bands_unique_members CHECK (
+        drummer_id != guitarist_id AND 
+        drummer_id != bassist_id AND 
+        drummer_id != singer_id AND
+        guitarist_id != bassist_id AND 
+        guitarist_id != singer_id AND 
+        bassist_id != singer_id
+    )
 );
 
 -- Create indexes for bands table
 CREATE INDEX idx_bands_status ON bands(status);
 CREATE INDEX idx_bands_formation_date ON bands(formation_date);
-CREATE INDEX idx_bands_member_ids ON bands USING GIN(member_ids);
+CREATE INDEX idx_bands_drummer_id ON bands(drummer_id);
+CREATE INDEX idx_bands_guitarist_id ON bands(guitarist_id);
+CREATE INDEX idx_bands_bassist_id ON bands(bassist_id);
+CREATE INDEX idx_bands_singer_id ON bands(singer_id);
 
 -- Messages table - stores chat messages for bands
 CREATE TABLE messages (
@@ -102,20 +117,42 @@ CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
 CREATE TRIGGER update_bands_updated_at BEFORE UPDATE ON bands
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Function to validate band member relationships
-CREATE OR REPLACE FUNCTION validate_band_members()
+-- Function to validate band member roles
+CREATE OR REPLACE FUNCTION validate_band_member_roles()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Check that all member_ids exist in users table
-    IF NOT (SELECT bool_and(EXISTS(SELECT 1 FROM users WHERE id = unnest_id))
-            FROM unnest(NEW.member_ids) AS unnest_id) THEN
-        RAISE EXCEPTION 'All band members must exist in users table';
+    -- Check that drummer has drummer role
+    IF NOT EXISTS(SELECT 1 FROM users WHERE id = NEW.drummer_id AND primary_role = 'drummer') THEN
+        RAISE EXCEPTION 'Drummer must have primary_role = drummer';
+    END IF;
+    
+    -- Check that guitarist has guitarist role
+    IF NOT EXISTS(SELECT 1 FROM users WHERE id = NEW.guitarist_id AND primary_role = 'guitarist') THEN
+        RAISE EXCEPTION 'Guitarist must have primary_role = guitarist';
+    END IF;
+    
+    -- Check that bassist has bassist role
+    IF NOT EXISTS(SELECT 1 FROM users WHERE id = NEW.bassist_id AND primary_role = 'bassist') THEN
+        RAISE EXCEPTION 'Bassist must have primary_role = bassist';
+    END IF;
+    
+    -- Check that singer has singer role
+    IF NOT EXISTS(SELECT 1 FROM users WHERE id = NEW.singer_id AND primary_role = 'singer') THEN
+        RAISE EXCEPTION 'Singer must have primary_role = singer';
     END IF;
     
     RETURN NEW;
 END;
 $$ language 'plpgsql';
 
--- Create trigger for band member validation
-CREATE TRIGGER validate_band_members_trigger BEFORE INSERT OR UPDATE ON bands
-    FOR EACH ROW EXECUTE FUNCTION validate_band_members();
+-- Create trigger for band member role validation
+CREATE TRIGGER validate_band_member_roles_trigger BEFORE INSERT OR UPDATE ON bands
+    FOR EACH ROW EXECUTE FUNCTION validate_band_member_roles();
+
+-- Function to get all band members as an array (for compatibility with existing code)
+CREATE OR REPLACE FUNCTION get_band_members(band_row bands)
+RETURNS UUID[] AS $$
+BEGIN
+    RETURN ARRAY[band_row.drummer_id, band_row.guitarist_id, band_row.bassist_id, band_row.singer_id];
+END;
+$$ language 'plpgsql' IMMUTABLE;

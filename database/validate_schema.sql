@@ -54,7 +54,8 @@ FROM information_schema.routines
 WHERE routine_schema = 'public' 
     AND routine_name IN (
         'update_updated_at_column',
-        'validate_band_members',
+        'validate_band_member_roles',
+        'get_band_members',
         'handle_new_user',
         'handle_user_delete'
     )

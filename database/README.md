@@ -49,15 +49,17 @@ Run the auth configuration script:
 
 1. **users** - Musician profiles
 
-   - Stores user information, instruments, genres, experience level
+   - Stores user information, primary role, instruments, genres, experience level
+   - Primary role must be: drummer, guitarist, bassist, singer, or other
    - Includes profile completion status
-   - Indexed on email, location, experience, instruments, genres
+   - Indexed on email, location, experience, primary_role, instruments, genres
 
 2. **bands** - Band formations
 
-   - Stores band member relationships (3-4 members)
+   - Stores exactly 4 band members: drummer, guitarist, bassist, singer
+   - Each role must be filled by a user with the corresponding primary_role
    - Includes compatibility data and status
-   - Validates member count and existence
+   - Validates role assignments and prevents duplicate members
 
 3. **messages** - Chat messages
 
@@ -82,7 +84,8 @@ Row Level Security (RLS) is enabled on all tables with policies that ensure:
 ### Triggers and Functions
 
 - **update_updated_at_column()** - Automatically updates timestamps
-- **validate_band_members()** - Ensures all band members exist
+- **validate_band_member_roles()** - Ensures each band member has the correct primary_role
+- **get_band_members()** - Helper function to get all band members as an array
 - **handle_new_user()** - Creates user profile on auth signup
 - **handle_user_delete()** - Cleans up user data on deletion
 
