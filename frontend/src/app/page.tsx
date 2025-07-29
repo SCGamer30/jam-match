@@ -1,103 +1,184 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useAuth } from "@/lib/useAuth";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function LandingPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && user) {
+      // Redirect authenticated users to dashboard
+      router.push("/dashboard");
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+    );
+  }
+
+  if (user) {
+    return null; // Will redirect to dashboard
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            Find Your Perfect
+            <span className="text-orange-600"> Band Members</span>
+          </h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            JamMatch uses AI-powered compatibility analysis to connect musicians
+            based on location, musical preferences, and experience level.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-orange-200 hover:bg-orange-300 text-orange-900 px-8 py-3"
+            >
+              <Link href="/register">Get Started</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-orange-200 text-orange-700 hover:bg-orange-50 px-8 py-3"
+            >
+              <Link href="/login">Sign In</Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <Card className="border-orange-100">
+            <CardHeader>
+              <CardTitle className="text-orange-800">
+                🎯 Smart Matching
+              </CardTitle>
+              <CardDescription>
+                Our AI analyzes your musical preferences, experience, and
+                location to find the most compatible band members.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-orange-100">
+            <CardHeader>
+              <CardTitle className="text-orange-800">
+                💬 Real-time Chat
+              </CardTitle>
+              <CardDescription>
+                Connect instantly with your matched band members through our
+                built-in messaging system.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-orange-100">
+            <CardHeader>
+              <CardTitle className="text-orange-800">
+                🎵 Auto Band Formation
+              </CardTitle>
+              <CardDescription>
+                When 3-4 musicians have high compatibility scores, we
+                automatically form a band for you.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+
+        {/* How It Works Section */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">
+            How It Works
+          </h2>
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-orange-800 font-bold">1</span>
+              </div>
+              <h3 className="font-semibold mb-2">Create Profile</h3>
+              <p className="text-sm text-gray-600">
+                Tell us about your musical background, instruments, and
+                preferences.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-orange-800 font-bold">2</span>
+              </div>
+              <h3 className="font-semibold mb-2">Get Matched</h3>
+              <p className="text-sm text-gray-600">
+                Our AI finds musicians with compatible styles and experience.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-orange-800 font-bold">3</span>
+              </div>
+              <h3 className="font-semibold mb-2">Form Bands</h3>
+              <p className="text-sm text-gray-600">
+                When compatibility is high, we automatically create your band.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-orange-800 font-bold">4</span>
+              </div>
+              <h3 className="font-semibold mb-2">Start Jamming</h3>
+              <p className="text-sm text-gray-600">
+                Connect with your band members and start making music together.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <Card className="max-w-2xl mx-auto border-orange-200 bg-orange-50">
+            <CardHeader>
+              <CardTitle className="text-2xl text-orange-800">
+                Ready to Find Your Band?
+              </CardTitle>
+              <CardDescription className="text-lg">
+                Join thousands of musicians who have found their perfect match.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button
+                asChild
+                size="lg"
+                className="bg-orange-200 hover:bg-orange-300 text-orange-900 px-12 py-3"
+              >
+                <Link href="/register">Create Your Profile</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

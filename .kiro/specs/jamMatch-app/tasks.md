@@ -19,8 +19,8 @@
   - Configure Supabase Auth settings and email templates
   - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.7_
 
-- [ ] 3. Build authentication system
-- [ ] 3.1 Create Supabase auth utilities and middleware
+- [x] 3. Build authentication system
+- [x] 3.1 Create Supabase auth utilities and middleware
 
   - Implement Supabase client configuration for frontend and backend
   - Create authentication middleware for protected routes
@@ -28,7 +28,7 @@
   - Write unit tests for authentication utilities
   - _Requirements: 1.2, 1.7, 10.6_
 
-- [ ] 3.2 Implement registration and login pages
+- [x] 3.2 Implement registration and login pages
 
   - Create registration page with form validation using shadcn/ui components
   - Implement login page with email/password authentication
