@@ -83,10 +83,7 @@ describe("Authentication Middleware", () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(401);
       expect(mockResponse.json).toHaveBeenCalledWith({
-        error: {
-          code: "MISSING_TOKEN",
-          message: "Access token is required",
-        },
+        error: "Access token required",
       });
       expect(mockNext).not.toHaveBeenCalled();
     });
@@ -96,11 +93,21 @@ describe("Authentication Middleware", () => {
         authorization: "Bearer invalid-token",
       };
 
+      // Mock both Supabase failure and JWT failure
       mockGetUser.mockResolvedValue({
         data: { user: null },
         error: { message: "Invalid token" },
       } as any);
 
+      // Mock JWT to also fail
+      const originalJwtSecret = process.env.JWT_SECRET;
+      process.env.JWT_SECRET = "test-secret";
+
+      // Mock jwt.verify to throw JsonWebTokenError
+      const mockJwtVerify = jest.spyOn(jwt, "verify").mockImplementation(() => {
+        throw new jwt.JsonWebTokenError("Invalid token");
+      });
+
       await authenticateToken(
         mockRequest as AuthenticatedRequest,
         mockResponse as Response,
@@ -109,20 +116,34 @@ describe("Authentication Middleware", () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(401);
       expect(mockResponse.json).toHaveBeenCalledWith({
-        error: {
-          code: "INVALID_TOKEN",
-          message: "Invalid or expired token",
-        },
+        error: "Invalid token",
       });
       expect(mockNext).not.toHaveBeenCalled();
+
+      // Cleanup
+      process.env.JWT_SECRET = originalJwtSecret;
+      mockJwtVerify.mockRestore();
     });
 
-    it("should handle Supabase errors", async () => {
+    it("should handle Supabase errors and fallback to JWT", async () => {
+      const payload = {
+        sub: "user-123",
+        email: "test@example.com",
+        role: "user",
+      };
+      const testSecret = "test-jwt-secret-key-for-testing-purposes-only";
+      const token = jwt.sign(payload, testSecret);
+
       mockRequest.headers = {
-        authorization: "Bearer error-token",
+        authorization: `Bearer ${token}`,
       };
 
+      // Mock Supabase to fail
       mockGetUser.mockRejectedValue(new Error("Network error"));
+
+      // Set JWT secret for fallback
+      const originalJwtSecret = process.env.JWT_SECRET;
+      process.env.JWT_SECRET = testSecret;
 
       await authenticateToken(
         mockRequest as AuthenticatedRequest,
@@ -130,14 +151,16 @@ describe("Authentication Middleware", () => {
         mockNext
       );
 
-      expect(mockResponse.status).toHaveBeenCalledWith(401);
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        error: {
-          code: "AUTH_ERROR",
-          message: "Authentication failed",
-        },
+      expect(mockRequest.user).toEqual({
+        id: "user-123",
+        email: "test@example.com",
+        role: "user",
       });
-      expect(mockNext).not.toHaveBeenCalled();
+      expect(mockNext).toHaveBeenCalled();
+      expect(mockResponse.status).not.toHaveBeenCalled();
+
+      // Cleanup
+      process.env.JWT_SECRET = originalJwtSecret;
     });
   });
 

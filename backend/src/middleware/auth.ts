@@ -32,46 +32,63 @@ export async function authenticateToken(
 
     if (!token) {
       res.status(401).json({
-        error: {
-          code: "MISSING_TOKEN",
-          message: "Access token is required",
-        },
+        error: "Access token required",
       });
       return;
     }
 
-    // Verify the token with Supabase
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser(token);
+    try {
+      // Try Supabase auth first
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser(token);
 
-    if (error || !user) {
-      res.status(401).json({
-        error: {
-          code: "INVALID_TOKEN",
-          message: "Invalid or expired token",
-        },
-      });
-      return;
+      if (!error && user) {
+        // Add user info to request object
+        req.user = {
+          id: user.id,
+          email: user.email || "",
+          role: user.role,
+        };
+        next();
+        return;
+      }
+    } catch (supabaseError) {
+      // Fall back to JWT verification if Supabase fails
+      console.log("Supabase auth failed, falling back to JWT");
     }
 
-    // Add user info to request object
+    // Fallback to JWT verification
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error("JWT_SECRET is not configured");
+    }
+
+    const decoded = jwt.verify(token, jwtSecret) as JWTPayload;
+
     req.user = {
-      id: user.id,
-      email: user.email || "",
-      role: user.role,
+      id: decoded.sub,
+      email: decoded.email,
+      role: decoded.role,
     };
 
     next();
   } catch (error) {
-    console.error("Authentication error:", error);
-    res.status(401).json({
-      error: {
-        code: "AUTH_ERROR",
-        message: "Authentication failed",
-      },
-    });
+    if (error instanceof jwt.TokenExpiredError) {
+      res.status(401).json({
+        error: "Token has expired",
+      });
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({
+        error: "Invalid token",
+      });
+    } else {
+      console.error("Authentication error:", error);
+      res.status(401).json({
+        error: "Authentication failed",
+      });
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import routes from "./routes";
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +27,9 @@ app.get("/health", (req, res) => {
 app.get("/", (req, res) => {
   res.json({ message: "JamMatch Backend API" });
 });
+
+// API routes
+app.use("/api", routes);
 
 // Start server
 app.listen(PORT, () => {
