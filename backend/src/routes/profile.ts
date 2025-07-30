@@ -13,6 +13,7 @@
 import { Router, Request, Response } from "express";
 import { supabase } from "../config/supabase";
 import { authenticateToken } from "../middleware/auth";
+import { calculateCompatibilityScore } from "../services/matchingService";
 
 const router = Router();
 
@@ -188,6 +189,179 @@ function validateProfileData(data: any): {
   };
 }
 
+// Helper function to update band compatibility data when a user's profile changes
+async function updateBandCompatibilityData(userId: string): Promise<void> {
+  try {
+    // Get all bands where this user is a member
+    const { data: userBands, error: bandsError } = await supabase
+      .from("bands")
+      .select("id, drummer_id, guitarist_id, bassist_id, singer_id")
+      .or(
+        `drummer_id.eq.${userId},guitarist_id.eq.${userId},bassist_id.eq.${userId},singer_id.eq.${userId}`
+      )
+      .eq("status", "active");
+
+    if (bandsError) {
+      console.error("Error fetching user bands:", bandsError);
+      return;
+    }
+
+    if (!userBands || userBands.length === 0) {
+      return; // User is not in any bands
+    }
+
+    // For each band, recalculate compatibility scores between all members
+    for (const band of userBands) {
+      const memberIds = [
+        band.drummer_id,
+        band.guitarist_id,
+        band.bassist_id,
+        band.singer_id,
+      ].filter(Boolean);
+
+      // Get all member profiles
+      const { data: members, error: membersError } = await supabase
+        .from("users")
+        .select(
+          "id, name, primary_role, instruments, genres, experience, location"
+        )
+        .in("id", memberIds);
+
+      if (membersError || !members) {
+        console.error("Error fetching band members:", membersError);
+        continue;
+      }
+
+      // Recalculate compatibility scores between all pairs
+      const compatibilityUpdates = [];
+      for (let i = 0; i < members.length; i++) {
+        for (let j = i + 1; j < members.length; j++) {
+          const user1 = members[i];
+          const user2 = members[j];
+
+          try {
+            const compatibilityScore = calculateCompatibilityScore(
+              user1 as any,
+              user2 as any
+            );
+
+            // Update or insert compatibility score
+            const { error: scoreError } = await supabase
+              .from("compatibility_scores")
+              .upsert(
+                {
+                  user1_id: user1.id < user2.id ? user1.id : user2.id,
+                  user2_id: user1.id < user2.id ? user2.id : user1.id,
+                  algorithmic_score: compatibilityScore.score,
+                  location_score: compatibilityScore.breakdown.locationScore,
+                  genre_score: compatibilityScore.breakdown.genreScore,
+                  experience_score:
+                    compatibilityScore.breakdown.experienceScore,
+                  final_score: compatibilityScore.score,
+                  calculated_at: new Date().toISOString(),
+                },
+                {
+                  onConflict: "user1_id,user2_id",
+                }
+              );
+
+            if (scoreError) {
+              console.error("Error updating compatibility score:", scoreError);
+            }
+          } catch (scoreError) {
+            console.error("Error calculating compatibility score:", scoreError);
+          }
+        }
+      }
+
+      // Update band's compatibility_data with average scores
+      const avgCompatibility = await calculateBandAverageCompatibility(
+        memberIds
+      );
+      const { error: bandUpdateError } = await supabase
+        .from("bands")
+        .update({
+          compatibility_data: avgCompatibility,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", band.id);
+
+      if (bandUpdateError) {
+        console.error(
+          "Error updating band compatibility data:",
+          bandUpdateError
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Error in updateBandCompatibilityData:", error);
+    throw error;
+  }
+}
+
+// Helper function to calculate average compatibility for a band
+async function calculateBandAverageCompatibility(
+  memberIds: string[]
+): Promise<any> {
+  try {
+    const { data: scores, error } = await supabase
+      .from("compatibility_scores")
+      .select("final_score, location_score, genre_score, experience_score")
+      .or(
+        memberIds
+          .map((id1) =>
+            memberIds
+              .map((id2) =>
+                id1 < id2
+                  ? `and(user1_id.eq.${id1},user2_id.eq.${id2})`
+                  : id2 < id1
+                  ? `and(user1_id.eq.${id2},user2_id.eq.${id1})`
+                  : null
+              )
+              .filter(Boolean)
+              .join(",")
+          )
+          .filter(Boolean)
+          .join(",")
+      );
+
+    if (error || !scores || scores.length === 0) {
+      return { average_compatibility: 0, total_pairs: 0 };
+    }
+
+    const totalScore = scores.reduce(
+      (sum, score) => sum + score.final_score,
+      0
+    );
+    const avgLocationScore =
+      scores.reduce((sum, score) => sum + score.location_score, 0) /
+      scores.length;
+    const avgGenreScore =
+      scores.reduce((sum, score) => sum + score.genre_score, 0) / scores.length;
+    const avgExperienceScore =
+      scores.reduce((sum, score) => sum + score.experience_score, 0) /
+      scores.length;
+
+    return {
+      average_compatibility: Math.round(totalScore / scores.length),
+      total_pairs: scores.length,
+      breakdown: {
+        location: Math.round(avgLocationScore),
+        genre: Math.round(avgGenreScore),
+        experience: Math.round(avgExperienceScore),
+      },
+      last_updated: new Date().toISOString(),
+    };
+  } catch (error) {
+    console.error("Error calculating band average compatibility:", error);
+    return {
+      average_compatibility: 0,
+      total_pairs: 0,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
 // GET /users/profile - Get current user's profile
 router.get(
   "/profile",
@@ -302,6 +476,17 @@ router.put(
             message: "Failed to update profile",
           },
         });
+      }
+
+      // Update band compatibility data when profile changes
+      try {
+        await updateBandCompatibilityData(userId);
+      } catch (compatibilityError) {
+        console.error(
+          "Failed to update band compatibility data:",
+          compatibilityError
+        );
+        // Don't fail the request if compatibility update fails
       }
 
       return res.json({
