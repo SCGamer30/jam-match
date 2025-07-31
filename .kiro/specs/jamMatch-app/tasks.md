@@ -172,8 +172,8 @@
   - Write API tests for chat endpoints
   - _Requirements: 4.5_
 
-- [ ] 9. Create settings and profile editing
-- [ ] 9.1 Build settings page interface
+- [x] 9. Create settings and profile editing
+- [x] 9.1 Build settings page interface
 
   - Create settings page layout with editable profile form
   - Implement form pre-population with current user data
@@ -183,7 +183,7 @@
   - Write component tests for settings interface
   - _Requirements: 6.1, 6.6_
 
-- [ ] 9.2 Implement profile update functionality
+- [x] 9.2 Implement profile update functionality
 
   - Connect settings form to profile update API endpoint
   - Implement real-time compatibility recalculation on profile changes
