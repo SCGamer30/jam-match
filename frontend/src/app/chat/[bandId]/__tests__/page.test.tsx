@@ -4,6 +4,19 @@ import ChatPage from "../page";
 import { chatApi, bandsApi } from "@/lib/api";
 import { useAuth } from "@/lib/useAuth";
 import { supabase } from "@/lib/supabase";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { it } from "zod/locales";
+import { beforeEach } from "node:test";
+import { describe } from "node:test";
+// Test imports are handled by Jest
 
 // Mock dependencies
 jest.mock("next/navigation", () => ({
@@ -255,7 +268,7 @@ describe("ChatPage", () => {
     render(<ChatPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Failed to load chat/)).toBeInTheDocument();
+      expect(screen.getByText(/Failed to load band/)).toBeInTheDocument();
     });
   });
 
