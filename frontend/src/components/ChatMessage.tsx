@@ -45,12 +45,12 @@ export function ChatMessage({
   return (
     <div
       className={cn(
-        "flex gap-3 mb-4",
+        "flex gap-2 sm:gap-3 mb-3 sm:mb-4",
         isCurrentUser ? "flex-row-reverse" : "flex-row"
       )}
     >
       {showAvatar && (
-        <Avatar className="w-8 h-8 flex-shrink-0">
+        <Avatar className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0">
           <AvatarImage src={message.user.avatar_url} alt={message.user.name} />
           <AvatarFallback className="text-xs">
             {getInitials(message.user.name)}
@@ -60,14 +60,14 @@ export function ChatMessage({
 
       <div
         className={cn(
-          "flex flex-col max-w-[70%]",
+          "flex flex-col max-w-[85%] sm:max-w-[70%]",
           isCurrentUser ? "items-end" : "items-start"
         )}
       >
         {showAvatar && (
           <div
             className={cn(
-              "text-xs text-gray-500 mb-1",
+              "text-xs text-gray-500 mb-1 px-1",
               isCurrentUser ? "text-right" : "text-left"
             )}
           >
@@ -77,7 +77,7 @@ export function ChatMessage({
 
         <div
           className={cn(
-            "px-4 py-2 rounded-lg break-words",
+            "px-3 sm:px-4 py-2 rounded-lg break-words",
             isCurrentUser
               ? "bg-[#FED7AA] text-gray-900 rounded-br-sm"
               : "bg-white border border-gray-200 text-gray-900 rounded-bl-sm"
@@ -88,7 +88,7 @@ export function ChatMessage({
 
         <div
           className={cn(
-            "text-xs text-gray-400 mt-1",
+            "text-xs text-gray-400 mt-1 px-1",
             isCurrentUser ? "text-right" : "text-left"
           )}
         >

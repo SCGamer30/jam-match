@@ -166,19 +166,19 @@ export function ProfileSetupWizard() {
   const isFirstStep = currentStep === 1;
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <div className="flex items-center justify-between mb-4">
-          <CardTitle className="text-xl">
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader className="pb-4 sm:pb-6">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <CardTitle className="text-lg sm:text-xl">
             Step {currentStep} of {STEPS.length}
           </CardTitle>
-          <div className="text-sm text-gray-500">
+          <div className="text-xs sm:text-sm text-gray-500">
             {Math.round((currentStep / STEPS.length) * 100)}% Complete
           </div>
         </div>
 
         {/* Progress indicator */}
-        <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-3 sm:mb-4">
           <div
             className="bg-orange-300 h-2 rounded-full transition-all duration-300"
             style={{ width: `${(currentStep / STEPS.length) * 100}%` }}
@@ -186,7 +186,7 @@ export function ProfileSetupWizard() {
         </div>
 
         <div className="text-center">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">
             {STEPS[currentStep - 1].title}
           </h2>
           <p className="text-gray-600 text-sm">
@@ -195,21 +195,22 @@ export function ProfileSetupWizard() {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
         {error && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription className="text-sm">{error}</AlertDescription>
           </Alert>
         )}
 
         {renderStep()}
 
-        <div className="flex justify-between pt-6">
+        <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 pt-4 sm:pt-6">
           <Button
             type="button"
             variant="outline"
             onClick={handlePrevious}
             disabled={isFirstStep || isSubmitting}
+            className="order-2 sm:order-1 w-full sm:w-auto"
           >
             Previous
           </Button>
@@ -219,7 +220,7 @@ export function ProfileSetupWizard() {
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="bg-orange-300 hover:bg-orange-400 text-gray-900"
+              className="order-1 sm:order-2 bg-orange-300 hover:bg-orange-400 text-gray-900 w-full sm:w-auto"
             >
               {isSubmitting ? "Completing..." : "Complete Profile"}
             </Button>
@@ -228,7 +229,7 @@ export function ProfileSetupWizard() {
               type="button"
               onClick={handleNext}
               disabled={isSubmitting}
-              className="bg-orange-300 hover:bg-orange-400 text-gray-900"
+              className="order-1 sm:order-2 bg-orange-300 hover:bg-orange-400 text-gray-900 w-full sm:w-auto"
             >
               Next
             </Button>

@@ -78,33 +78,41 @@ export function BandCard({
 
   return (
     <Card className={`hover:shadow-md transition-shadow ${className}`}>
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <CardTitle className="text-lg text-gray-900 mb-1">
+      <CardHeader className="pb-2 sm:pb-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <CardTitle className="text-base sm:text-lg text-gray-900 mb-1 truncate">
               {getBandName()}
             </CardTitle>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Calendar className="h-4 w-4" />
-              <span>Formed {formatFormationDate(band.formation_date)}</span>
-              <Badge variant="outline" className="ml-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+              <div className="flex items-center gap-1">
+                <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span>Formed {formatFormationDate(band.formation_date)}</span>
+              </div>
+              <Badge variant="outline" className="self-start sm:ml-2 text-xs">
                 {band.status}
               </Badge>
             </div>
           </div>
-          <CompatibilityScore score={averageCompatibility} size="md" />
+          <CompatibilityScore
+            score={averageCompatibility}
+            size="sm"
+            className="sm:size-md"
+          />
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 sm:space-y-4 pt-0">
         {/* Band Members */}
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Users className="h-4 w-4 text-gray-600" />
-            <h4 className="text-sm font-medium text-gray-700">Band Members</h4>
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+            <Users className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
+            <h4 className="text-xs sm:text-sm font-medium text-gray-700">
+              Band Members
+            </h4>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
             {band.members.map((member) => (
               <div
                 key={member.id}
@@ -114,7 +122,7 @@ export function BandCard({
                     : "bg-gray-50"
                 }`}
               >
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
                   <AvatarImage src={member.avatar_url} alt={member.name} />
                   <AvatarFallback className="bg-orange-100 text-orange-800 text-xs">
                     {member.name
@@ -129,7 +137,7 @@ export function BandCard({
                     <span className="text-xs">
                       {getRoleIcon(member.primary_role)}
                     </span>
-                    <span className="text-sm font-medium text-gray-900 truncate">
+                    <span className="text-xs sm:text-sm font-medium text-gray-900 truncate">
                       {member.id === currentUserId ? "You" : member.name}
                     </span>
                   </div>
@@ -187,10 +195,11 @@ export function BandCard({
               variant="outline"
               size="sm"
               onClick={() => onViewBand(band.id)}
-              className="flex-1"
+              className="flex-1 text-xs sm:text-sm"
             >
-              <Users className="h-4 w-4 mr-1" />
-              View Band
+              <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+              <span className="hidden xs:inline">View Band</span>
+              <span className="xs:hidden">View</span>
             </Button>
           )}
           {onOpenChat && (
@@ -198,9 +207,9 @@ export function BandCard({
               variant="default"
               size="sm"
               onClick={() => onOpenChat(band.id)}
-              className="flex-1 bg-orange-200 hover:bg-orange-300 text-orange-900"
+              className="flex-1 bg-orange-200 hover:bg-orange-300 text-orange-900 text-xs sm:text-sm"
             >
-              <MessageCircle className="h-4 w-4 mr-1" />
+              <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
               Chat
             </Button>
           )}

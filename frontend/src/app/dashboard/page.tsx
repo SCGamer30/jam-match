@@ -137,7 +137,7 @@ function DashboardContent() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white flex items-center justify-center p-4">
         <div className="text-center">
           <Loader2
             className="h-8 w-8 animate-spin mx-auto mb-4 text-orange-600"
@@ -150,45 +150,48 @@ function DashboardContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-2 sm:p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Dashboard
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600">
               Welcome back, {user?.name || authUser?.email}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <Button
               onClick={handleRefresh}
               variant="outline"
               size="sm"
               disabled={refreshing}
-              className="border-orange-200 text-orange-700 hover:bg-orange-50"
+              className="border-orange-200 text-orange-700 hover:bg-orange-50 flex-1 sm:flex-none"
             >
               <RefreshCw
                 className={`h-4 w-4 mr-1 ${refreshing ? "animate-spin" : ""}`}
               />
-              Refresh
+              <span className="hidden xs:inline">Refresh</span>
             </Button>
             <Button
               onClick={handleSettings}
               variant="outline"
               size="sm"
-              className="border-orange-200 text-orange-700 hover:bg-orange-50"
+              className="border-orange-200 text-orange-700 hover:bg-orange-50 flex-1 sm:flex-none"
             >
               <Settings className="h-4 w-4 mr-1" />
-              Settings
+              <span className="hidden xs:inline">Settings</span>
             </Button>
             <Button
               onClick={handleSignOut}
               variant="outline"
               size="sm"
-              className="border-orange-200 text-orange-700 hover:bg-orange-50"
+              className="border-orange-200 text-orange-700 hover:bg-orange-50 flex-1 sm:flex-none"
             >
-              Sign Out
+              <span className="hidden xs:inline">Sign Out</span>
+              <span className="xs:hidden">Exit</span>
             </Button>
           </div>
         </div>
@@ -236,40 +239,40 @@ function DashboardContent() {
         {user && user.profile_completed && (
           <div className="space-y-8">
             {/* Status Overview */}
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                <CardHeader className="pb-2 sm:pb-3">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">
                     Profile Status
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-0">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-green-600" />
-                    <span className="text-lg font-semibold text-gray-900">
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+                    <span className="text-base sm:text-lg font-semibold text-gray-900">
                       Complete
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
                     Ready for matching
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                <CardHeader className="pb-2 sm:pb-3">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">
                     Active Bands
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-0">
                   <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-blue-600" />
-                    <span className="text-lg font-semibold text-gray-900">
+                    <Users className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                    <span className="text-base sm:text-lg font-semibold text-gray-900">
                       {bands.length}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
                     {bands.length === 0
                       ? "No bands yet"
                       : `${bands.length} active band${
@@ -280,19 +283,19 @@ function DashboardContent() {
               </Card>
 
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                <CardHeader className="pb-2 sm:pb-3">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">
                     Potential Matches
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-0">
                   <div className="flex items-center gap-2">
-                    <Heart className="h-5 w-5 text-red-600" />
-                    <span className="text-lg font-semibold text-gray-900">
+                    <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
+                    <span className="text-base sm:text-lg font-semibold text-gray-900">
                       {matches.length}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
                     {matches.length === 0
                       ? "No matches found"
                       : `${matches.length} compatible musician${
@@ -305,11 +308,11 @@ function DashboardContent() {
 
             {/* Current Bands */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
                 Your Bands
               </h2>
               {bands.length > 0 ? (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
                   {bands.map((band) => (
                     <BandCard
                       key={band.id}
@@ -345,11 +348,11 @@ function DashboardContent() {
 
             {/* Potential Matches */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
                 Potential Matches
               </h2>
               {matches.length > 0 ? (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
                   {matches.map((match) => (
                     <MatchCard
                       key={match.user.id}

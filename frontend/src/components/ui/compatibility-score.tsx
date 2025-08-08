@@ -37,15 +37,15 @@ export function CompatibilityScore({
   };
 
   const sizeClasses = {
-    sm: "w-12 h-12 text-xs",
-    md: "w-16 h-16 text-sm",
-    lg: "w-20 h-20 text-base",
+    sm: "w-10 h-10 sm:w-12 sm:h-12 text-xs",
+    md: "w-14 h-14 sm:w-16 sm:h-16 text-xs sm:text-sm",
+    lg: "w-16 h-16 sm:w-20 sm:h-20 text-sm sm:text-base",
   };
 
   const progressSizeClasses = {
-    sm: "w-8 h-8",
-    md: "w-10 h-10",
-    lg: "w-12 h-12",
+    sm: "w-6 h-6 sm:w-8 sm:h-8",
+    md: "w-8 h-8 sm:w-10 sm:h-10",
+    lg: "w-10 h-10 sm:w-12 sm:h-12",
   };
 
   return (
@@ -95,7 +95,9 @@ export function CompatibilityScore({
 
       {/* Label */}
       {showLabel && (
-        <span className="text-xs text-gray-600 font-medium">Compatibility</span>
+        <span className="text-xs text-gray-600 font-medium text-center">
+          Compatibility
+        </span>
       )}
     </div>
   );

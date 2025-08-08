@@ -123,26 +123,30 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white p-3 sm:p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">
+        <CardHeader className="space-y-1 text-center">
+          <CardTitle className="text-xl sm:text-2xl font-bold">
             Welcome Back
           </CardTitle>
-          <CardDescription className="text-center">
+          <CardDescription className="text-sm sm:text-base">
             Sign in to your JamMatch account
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {errors.general && (
               <Alert variant="destructive">
-                <AlertDescription>{errors.general}</AlertDescription>
+                <AlertDescription className="text-sm">
+                  {errors.general}
+                </AlertDescription>
               </Alert>
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm">
+                Email
+              </Label>
               <Input
                 id="email"
                 name="email"
@@ -150,7 +154,9 @@ export default function LoginPage() {
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={errors.email ? "border-red-500" : ""}
+                className={`text-base sm:text-sm ${
+                  errors.email ? "border-red-500" : ""
+                }`}
                 disabled={isLoading}
               />
               {errors.email && (
@@ -159,7 +165,9 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-sm">
+                Password
+              </Label>
               <Input
                 id="password"
                 name="password"
@@ -167,7 +175,9 @@ export default function LoginPage() {
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className={errors.password ? "border-red-500" : ""}
+                className={`text-base sm:text-sm ${
+                  errors.password ? "border-red-500" : ""
+                }`}
                 disabled={isLoading}
               />
               {errors.password && (
@@ -177,7 +187,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full bg-orange-200 hover:bg-orange-300 text-orange-900"
+              className="w-full bg-orange-200 hover:bg-orange-300 text-orange-900 h-11 sm:h-10 text-base sm:text-sm"
               disabled={isLoading}
             >
               {isLoading ? "Signing In..." : "Sign In"}

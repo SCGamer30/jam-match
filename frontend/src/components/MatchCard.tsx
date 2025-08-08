@@ -55,12 +55,12 @@ export function MatchCard({
 
   return (
     <Card className={`hover:shadow-md transition-shadow ${className}`}>
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-12 w-12">
+      <CardHeader className="pb-2 sm:pb-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
               <AvatarImage src={user.avatar_url} alt={user.name} />
-              <AvatarFallback className="bg-orange-100 text-orange-800">
+              <AvatarFallback className="bg-orange-100 text-orange-800 text-xs sm:text-sm">
                 {user.name
                   .split(" ")
                   .map((n) => n[0])
@@ -68,94 +68,107 @@ export function MatchCard({
                   .toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <h3 className="font-semibold text-lg text-gray-900">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-base sm:text-lg text-gray-900 truncate">
                 {user.name}
               </h3>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
                 <span className="flex items-center gap-1">
                   <span>{getRoleIcon(user.primary_role)}</span>
-                  {user.primary_role.charAt(0).toUpperCase() +
-                    user.primary_role.slice(1)}
+                  <span className="truncate">
+                    {user.primary_role.charAt(0).toUpperCase() +
+                      user.primary_role.slice(1)}
+                  </span>
                 </span>
                 {user.location && (
-                  <>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
-                      {user.location}
-                    </span>
-                  </>
+                  <span className="flex items-center gap-1 truncate">
+                    <MapPin className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">{user.location}</span>
+                  </span>
                 )}
               </div>
             </div>
           </div>
-          <CompatibilityScore score={compatibility_score} size="md" />
+          <CompatibilityScore
+            score={compatibility_score}
+            size="sm"
+            className="sm:size-md"
+          />
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 sm:space-y-4 pt-0">
         {/* Bio */}
         {user.bio && (
-          <p className="text-sm text-gray-600 line-clamp-2">{user.bio}</p>
+          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+            {user.bio}
+          </p>
         )}
 
         {/* Experience Level */}
         <div className="flex items-center gap-2">
-          <Star className="h-4 w-4 text-gray-400" />
-          <Badge className={getExperienceColor(user.experience)}>
+          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
+          <Badge className={`text-xs ${getExperienceColor(user.experience)}`}>
             {user.experience.charAt(0).toUpperCase() + user.experience.slice(1)}
           </Badge>
         </div>
 
         {/* Instruments */}
         <div>
-          <h4 className="text-sm font-medium text-gray-700 mb-2">
+          <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
             Instruments
           </h4>
-          <InstrumentBadgeList instruments={user.instruments} maxDisplay={3} />
+          <InstrumentBadgeList
+            instruments={user.instruments}
+            maxDisplay={2}
+            size="sm"
+          />
         </div>
 
         {/* Genres */}
         <div>
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Genres</h4>
-          <GenreBadgeList genres={user.genres} maxDisplay={3} />
+          <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+            Genres
+          </h4>
+          <GenreBadgeList genres={user.genres} maxDisplay={2} size="sm" />
         </div>
 
         {/* Compatibility Breakdown */}
-        <div className="bg-gray-50 rounded-lg p-3">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">
+        <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
+          <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
             Compatibility Breakdown
           </h4>
-          <div className="grid grid-cols-3 gap-2 text-xs">
+          <div className="grid grid-cols-3 gap-1 sm:gap-2 text-xs">
             <div className="text-center">
-              <div className="font-semibold text-gray-900">
+              <div className="font-semibold text-gray-900 text-xs sm:text-sm">
                 {breakdown.locationScore}/50
               </div>
-              <div className="text-gray-600">Location</div>
+              <div className="text-gray-600 text-xs">Location</div>
             </div>
             <div className="text-center">
-              <div className="font-semibold text-gray-900">
+              <div className="font-semibold text-gray-900 text-xs sm:text-sm">
                 {breakdown.genreScore}/30
               </div>
-              <div className="text-gray-600">Genres</div>
+              <div className="text-gray-600 text-xs">Genres</div>
             </div>
             <div className="text-center">
-              <div className="font-semibold text-gray-900">
+              <div className="font-semibold text-gray-900 text-xs sm:text-sm">
                 {breakdown.experienceScore}/20
               </div>
-              <div className="text-gray-600">Experience</div>
+              <div className="text-gray-600 text-xs">Experience</div>
             </div>
           </div>
         </div>
 
         {/* Reasoning */}
         {reasoning && (
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-orange-800 mb-1">
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 sm:p-3">
+            <h4 className="text-xs sm:text-sm font-medium text-orange-800 mb-1">
               Why you match
             </h4>
-            <p className="text-sm text-orange-700">{reasoning}</p>
+            <p className="text-xs sm:text-sm text-orange-700 line-clamp-3">
+              {reasoning}
+            </p>
           </div>
         )}
 
@@ -166,10 +179,11 @@ export function MatchCard({
               variant="outline"
               size="sm"
               onClick={() => onViewProfile(user.id)}
-              className="flex-1"
+              className="flex-1 text-xs sm:text-sm"
             >
-              <User className="h-4 w-4 mr-1" />
-              View Profile
+              <User className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+              <span className="hidden xs:inline">View Profile</span>
+              <span className="xs:hidden">View</span>
             </Button>
           )}
           {onRequestAIAnalysis && (
@@ -177,10 +191,11 @@ export function MatchCard({
               variant="default"
               size="sm"
               onClick={() => onRequestAIAnalysis(user.id)}
-              className="flex-1 bg-orange-200 hover:bg-orange-300 text-orange-900"
+              className="flex-1 bg-orange-200 hover:bg-orange-300 text-orange-900 text-xs sm:text-sm"
             >
-              <Star className="h-4 w-4 mr-1" />
-              AI Analysis
+              <Star className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+              <span className="hidden xs:inline">AI Analysis</span>
+              <span className="xs:hidden">AI</span>
             </Button>
           )}
         </div>
