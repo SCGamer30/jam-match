@@ -28,6 +28,10 @@ export function MatchCard({
 }: MatchCardProps) {
   const { user, compatibility_score, reasoning, breakdown } = match;
 
+  if (!user) {
+    return null;
+  }
+
   // Get experience level color
   const getExperienceColor = (experience: string) => {
     const colors = {
@@ -60,7 +64,7 @@ export function MatchCard({
           <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
               <AvatarImage src={user.avatar_url} alt={user.name} />
-              <AvatarFallback className="bg-orange-100 text-orange-800 text-xs sm:text-sm">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">
                 {user.name
                   .split(" ")
                   .map((n) => n[0])
@@ -69,15 +73,15 @@ export function MatchCard({
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-base sm:text-lg text-gray-900 truncate">
+              <h3 className="font-semibold text-base sm:text-lg text-foreground truncate">
                 {user.name}
               </h3>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
-                  <span>{getRoleIcon(user.primary_role)}</span>
+                  <span>{getRoleIcon(user.primary_role || "other")}</span>
                   <span className="truncate">
-                    {user.primary_role.charAt(0).toUpperCase() +
-                      user.primary_role.slice(1)}
+                    {(user.primary_role || "musician").charAt(0).toUpperCase() +
+                      (user.primary_role || "musician").slice(1)}
                   </span>
                 </span>
                 {user.location && (
@@ -100,26 +104,31 @@ export function MatchCard({
       <CardContent className="space-y-3 sm:space-y-4 pt-0">
         {/* Bio */}
         {user.bio && (
-          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
             {user.bio}
           </p>
         )}
 
         {/* Experience Level */}
         <div className="flex items-center gap-2">
-          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
-          <Badge className={`text-xs ${getExperienceColor(user.experience)}`}>
-            {user.experience.charAt(0).toUpperCase() + user.experience.slice(1)}
+          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+          <Badge
+            className={`text-xs ${getExperienceColor(
+              user.experience || "beginner"
+            )}`}
+          >
+            {(user.experience || "beginner").charAt(0).toUpperCase() +
+              (user.experience || "beginner").slice(1)}
           </Badge>
         </div>
 
         {/* Instruments */}
         <div>
-          <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+          <h4 className="text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
             Instruments
           </h4>
           <InstrumentBadgeList
-            instruments={user.instruments}
+            instruments={user.instruments || []}
             maxDisplay={2}
             size="sm"
           />
@@ -127,46 +136,48 @@ export function MatchCard({
 
         {/* Genres */}
         <div>
-          <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+          <h4 className="text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
             Genres
           </h4>
-          <GenreBadgeList genres={user.genres} maxDisplay={2} size="sm" />
+          <GenreBadgeList genres={user.genres || []} maxDisplay={2} size="sm" />
         </div>
 
         {/* Compatibility Breakdown */}
-        <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
-          <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-            Compatibility Breakdown
-          </h4>
-          <div className="grid grid-cols-3 gap-1 sm:gap-2 text-xs">
-            <div className="text-center">
-              <div className="font-semibold text-gray-900 text-xs sm:text-sm">
-                {breakdown.locationScore}/50
+        {breakdown && (
+          <div className="bg-muted/50 rounded-lg p-2 sm:p-3">
+            <h4 className="text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
+              Compatibility Breakdown
+            </h4>
+            <div className="grid grid-cols-3 gap-1 sm:gap-2 text-xs">
+              <div className="text-center">
+                <div className="font-semibold text-foreground text-xs sm:text-sm">
+                  {breakdown.locationScore || 0}/50
+                </div>
+                <div className="text-muted-foreground text-xs">Location</div>
               </div>
-              <div className="text-gray-600 text-xs">Location</div>
-            </div>
-            <div className="text-center">
-              <div className="font-semibold text-gray-900 text-xs sm:text-sm">
-                {breakdown.genreScore}/30
+              <div className="text-center">
+                <div className="font-semibold text-foreground text-xs sm:text-sm">
+                  {breakdown.genreScore || 0}/30
+                </div>
+                <div className="text-muted-foreground text-xs">Genres</div>
               </div>
-              <div className="text-gray-600 text-xs">Genres</div>
-            </div>
-            <div className="text-center">
-              <div className="font-semibold text-gray-900 text-xs sm:text-sm">
-                {breakdown.experienceScore}/20
+              <div className="text-center">
+                <div className="font-semibold text-foreground text-xs sm:text-sm">
+                  {breakdown.experienceScore || 0}/20
+                </div>
+                <div className="text-muted-foreground text-xs">Experience</div>
               </div>
-              <div className="text-gray-600 text-xs">Experience</div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Reasoning */}
         {reasoning && (
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 sm:p-3">
-            <h4 className="text-xs sm:text-sm font-medium text-orange-800 mb-1">
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-2 sm:p-3">
+            <h4 className="text-xs sm:text-sm font-medium text-primary mb-1">
               Why you match
             </h4>
-            <p className="text-xs sm:text-sm text-orange-700 line-clamp-3">
+            <p className="text-xs sm:text-sm text-primary/80 line-clamp-3">
               {reasoning}
             </p>
           </div>
@@ -191,7 +202,7 @@ export function MatchCard({
               variant="default"
               size="sm"
               onClick={() => onRequestAIAnalysis(user.id)}
-              className="flex-1 bg-orange-200 hover:bg-orange-300 text-orange-900 text-xs sm:text-sm"
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground text-xs sm:text-sm"
             >
               <Star className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
               <span className="hidden xs:inline">AI Analysis</span>

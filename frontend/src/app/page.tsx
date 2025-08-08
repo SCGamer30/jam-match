@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,178 +9,313 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAuth } from "@/lib/useAuth";
+import {
+  Music,
+  Users,
+  MessageCircle,
+  Star,
+  Zap,
+  Heart,
+  Sparkles,
+  Play,
+  Guitar,
+  Mic,
+  Headphones,
+} from "lucide-react";
 
 export default function LandingPage() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-accent/30 to-secondary relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-chart-2/30 rounded-full mix-blend-multiply filter blur-xl opacity-25 animate-pulse animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-accent/25 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-pulse animation-delay-1000"></div>
+      </div>
 
-  useEffect(() => {
-    if (!loading && user) {
-      // Redirect authenticated users to dashboard
-      router.push("/dashboard");
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
+      {/* Floating Music Notes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 text-primary/20 text-6xl animate-bounce animation-delay-1000">
+          ♪
+        </div>
+        <div className="absolute top-1/3 right-1/4 text-chart-2/20 text-4xl animate-bounce animation-delay-3000">
+          ♫
+        </div>
+        <div className="absolute bottom-1/4 left-1/3 text-primary/15 text-5xl animate-bounce animation-delay-2000">
+          ♬
+        </div>
+        <div className="absolute top-1/2 right-1/3 text-accent-foreground/20 text-3xl animate-bounce animation-delay-4000">
+          ♩
         </div>
       </div>
-    );
-  }
 
-  if (user) {
-    return null; // Will redirect to dashboard
-  }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
       {/* Hero Section */}
-      <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-16">
-        <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+      <div className="relative z-10 container mx-auto px-4 py-16 sm:py-24">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-card/80 backdrop-blur-sm rounded-full px-6 py-2 mb-8 border border-border shadow-lg">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-foreground/90 text-sm font-medium">
+              AI-Powered Music Matching
+            </span>
+          </div>
+
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
             Find Your Perfect
-            <span className="text-orange-600"> Band Members</span>
+            <span className="bg-gradient-to-r from-primary via-chart-2 to-primary bg-clip-text text-transparent block">
+              Band Members
+            </span>
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
-            JamMatch uses AI-powered compatibility analysis to connect musicians
-            based on location, musical preferences, and experience level.
+
+          <p className="text-xl sm:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+            Connect with musicians who share your passion, style, and vision.
+            Our AI analyzes compatibility to create the perfect musical
+            chemistry.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-sm sm:max-w-none mx-auto">
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button
               asChild
               size="lg"
-              className="bg-orange-200 hover:bg-orange-300 text-orange-900 px-6 sm:px-8 py-3 h-12 sm:h-auto text-base"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg font-semibold rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300 border-0"
             >
-              <Link href="/register">Get Started</Link>
+              <Link href="/dashboard" className="flex items-center gap-2">
+                <Play className="h-5 w-5" />
+                Start Jamming
+              </Link>
             </Button>
             <Button
               asChild
               variant="outline"
               size="lg"
-              className="border-orange-200 text-orange-700 hover:bg-orange-50 px-6 sm:px-8 py-3 h-12 sm:h-auto text-base"
+              className="border-2 border-border text-foreground hover:bg-accent px-8 py-4 text-lg font-semibold rounded-full backdrop-blur-sm"
             >
-              <Link href="/login">Sign In</Link>
+              <Link href="/profile/setup">Explore Features</Link>
             </Button>
           </div>
         </div>
 
         {/* Features Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12 sm:mb-16">
-          <Card className="border-orange-100">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-orange-800 text-lg sm:text-xl">
-                🎯 Smart Matching
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <Card className="bg-card/80 backdrop-blur-lg border border-border hover:bg-card/90 transition-all duration-300 group shadow-lg hover:shadow-xl">
+            <CardHeader className="text-center pb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-chart-2 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Zap className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <CardTitle className="text-foreground text-xl font-bold">
+                AI-Powered Matching
               </CardTitle>
-              <CardDescription className="text-sm sm:text-base">
-                Our AI analyzes your musical preferences, experience, and
-                location to find the most compatible band members.
+              <CardDescription className="text-muted-foreground text-base">
+                Our advanced AI analyzes musical DNA, personality traits, and
+                creative goals to find your perfect musical soulmates.
               </CardDescription>
             </CardHeader>
           </Card>
 
-          <Card className="border-orange-100">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-orange-800 text-lg sm:text-xl">
-                💬 Real-time Chat
+          <Card className="bg-card/80 backdrop-blur-lg border border-border hover:bg-card/90 transition-all duration-300 group shadow-lg hover:shadow-xl">
+            <CardHeader className="text-center pb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-chart-2 to-primary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <MessageCircle className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <CardTitle className="text-foreground text-xl font-bold">
+                Instant Connection
               </CardTitle>
-              <CardDescription className="text-sm sm:text-base">
-                Connect instantly with your matched band members through our
-                built-in messaging system.
+              <CardDescription className="text-muted-foreground text-base">
+                Chat in real-time, share music samples, and collaborate on ideas
+                before you even meet in person.
               </CardDescription>
             </CardHeader>
           </Card>
 
-          <Card className="border-orange-100 sm:col-span-2 lg:col-span-1">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-orange-800 text-lg sm:text-xl">
-                🎵 Auto Band Formation
+          <Card className="bg-card/80 backdrop-blur-lg border border-border hover:bg-card/90 transition-all duration-300 group shadow-lg hover:shadow-xl">
+            <CardHeader className="text-center pb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-accent-foreground to-primary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Users className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <CardTitle className="text-foreground text-xl font-bold">
+                Smart Band Formation
               </CardTitle>
-              <CardDescription className="text-sm sm:text-base">
-                When 3-4 musicians have high compatibility scores, we
-                automatically form a band for you.
+              <CardDescription className="text-muted-foreground text-base">
+                When compatibility scores align, we automatically create your
+                dream band and set up your first jam session.
               </CardDescription>
             </CardHeader>
           </Card>
         </div>
 
         {/* How It Works Section */}
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">
-            How It Works
+        <div className="text-center mb-20">
+          <h2 className="text-4xl font-bold text-foreground mb-4">
+            Your Musical Journey
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-800 font-bold text-lg">1</span>
+          <p className="text-muted-foreground text-xl mb-12">
+            Four simple steps to find your perfect bandmates
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center group">
+              <div className="relative mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary to-chart-2 rounded-full flex items-center justify-center mx-auto shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-primary-foreground font-bold text-2xl">
+                    1
+                  </span>
+                </div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-chart-2/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h3 className="font-semibold mb-2 text-base sm:text-lg">
-                Create Profile
+              <h3 className="font-bold mb-3 text-xl text-foreground">
+                Create Your Profile
               </h3>
-              <p className="text-sm sm:text-base text-gray-600">
-                Tell us about your musical background, instruments, and
-                preferences.
+              <p className="text-muted-foreground leading-relaxed">
+                Share your musical DNA - instruments, genres, experience, and
+                what makes you tick as an artist.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-800 font-bold text-lg">2</span>
+
+            <div className="text-center group">
+              <div className="relative mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-chart-2 to-primary rounded-full flex items-center justify-center mx-auto shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-primary-foreground font-bold text-2xl">
+                    2
+                  </span>
+                </div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-chart-2/20 to-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h3 className="font-semibold mb-2 text-base sm:text-lg">
-                Get Matched
+              <h3 className="font-bold mb-3 text-xl text-foreground">
+                AI Magic Happens
               </h3>
-              <p className="text-sm sm:text-base text-gray-600">
-                Our AI finds musicians with compatible styles and experience.
+              <p className="text-muted-foreground leading-relaxed">
+                Our AI analyzes thousands of compatibility factors to find
+                musicians who complement your style perfectly.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-800 font-bold text-lg">3</span>
+
+            <div className="text-center group">
+              <div className="relative mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-accent-foreground to-chart-2 rounded-full flex items-center justify-center mx-auto shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-primary-foreground font-bold text-2xl">
+                    3
+                  </span>
+                </div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-accent-foreground/20 to-chart-2/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h3 className="font-semibold mb-2 text-base sm:text-lg">
-                Form Bands
+              <h3 className="font-bold mb-3 text-xl text-foreground">
+                Connect & Chat
               </h3>
-              <p className="text-sm sm:text-base text-gray-600">
-                When compatibility is high, we automatically create your band.
+              <p className="text-muted-foreground leading-relaxed">
+                Meet your matches, share ideas, and vibe check through our
+                built-in messaging and collaboration tools.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-800 font-bold text-lg">4</span>
+
+            <div className="text-center group">
+              <div className="relative mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent-foreground rounded-full flex items-center justify-center mx-auto shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-primary-foreground font-bold text-2xl">
+                    4
+                  </span>
+                </div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent-foreground/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h3 className="font-semibold mb-2 text-base sm:text-lg">
-                Start Jamming
+              <h3 className="font-bold mb-3 text-xl text-foreground">
+                Form Your Band
               </h3>
-              <p className="text-sm sm:text-base text-gray-600">
-                Connect with your band members and start making music together.
+              <p className="text-muted-foreground leading-relaxed">
+                When the chemistry is right, we automatically create your band
+                and help you start making music together.
               </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Instruments Showcase */}
+        <div className="text-center mb-20">
+          <h2 className="text-3xl font-bold text-foreground mb-8">
+            For Every Instrument, Every Genre
+          </h2>
+          <div className="flex justify-center items-center gap-8 flex-wrap">
+            <div className="flex flex-col items-center group">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-chart-2 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Guitar className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <span className="text-sm text-muted-foreground">Guitar</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-16 h-16 bg-gradient-to-br from-chart-2 to-primary rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Mic className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <span className="text-sm text-muted-foreground">Vocals</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-16 h-16 bg-gradient-to-br from-accent-foreground to-primary rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Music className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <span className="text-sm text-muted-foreground">Piano</span>
+            </div>
+            <div className="flex flex-col items-center group">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent-foreground rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <Headphones className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <span className="text-sm text-muted-foreground">Producer</span>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
         <div className="text-center">
-          <Card className="max-w-2xl mx-auto border-orange-200 bg-orange-50">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl sm:text-2xl text-orange-800">
-                Ready to Find Your Band?
+          <Card className="max-w-4xl mx-auto bg-card/90 backdrop-blur-xl border border-border shadow-2xl">
+            <CardHeader className="pb-6">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Heart className="h-6 w-6 text-primary" />
+                <Star className="h-8 w-8 text-chart-2" />
+                <Heart className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+                Ready to Find Your Musical Soulmates?
               </CardTitle>
-              <CardDescription className="text-base sm:text-lg">
-                Join thousands of musicians who have found their perfect match.
+              <CardDescription className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Join thousands of musicians who have discovered their perfect
+                bandmates and are creating amazing music together.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <Button
-                asChild
-                size="lg"
-                className="bg-orange-200 hover:bg-orange-300 text-orange-900 px-8 sm:px-12 py-3 h-12 sm:h-auto text-base"
-              >
-                <Link href="/register">Create Your Profile</Link>
-              </Button>
+            <CardContent className="pb-8">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-semibold rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300"
+                >
+                  <Link
+                    href="/profile/setup"
+                    className="flex items-center gap-2"
+                  >
+                    <Music className="h-5 w-5" />
+                    Start Your Journey
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-border text-foreground hover:bg-accent px-12 py-4 text-lg font-semibold rounded-full backdrop-blur-sm"
+                >
+                  <Link href="/dashboard">Explore Dashboard</Link>
+                </Button>
+              </div>
+
+              <div className="flex items-center justify-center gap-8 text-muted-foreground text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <span>Free to join</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-chart-2 rounded-full"></div>
+                  <span>AI-powered matching</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-accent-foreground rounded-full"></div>
+                  <span>Instant connections</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
