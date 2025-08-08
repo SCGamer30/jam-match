@@ -6,16 +6,6 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MatchCard } from "../MatchCard";
 import { Match } from "@/types/dashboard";
-import { it } from "node:test";
-import { it } from "node:test";
-import { it } from "node:test";
-import { it } from "node:test";
-import { it } from "node:test";
-import { it } from "node:test";
-import { it } from "node:test";
-import { it } from "node:test";
-import { it } from "node:test";
-import { describe } from "node:test";
 
 const mockMatch: Match = {
   user: {
@@ -46,7 +36,7 @@ describe("MatchCard", () => {
 
     // Check user name and role
     expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("Guitarist")).toBeInTheDocument();
+    expect(screen.getAllByText("Guitarist")).toHaveLength(1);
 
     // Check location
     expect(screen.getByText("New York")).toBeInTheDocument();
@@ -106,7 +96,7 @@ describe("MatchCard", () => {
 
     // Should still render name and role
     expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("Guitarist")).toBeInTheDocument();
+    expect(screen.getAllByText("Guitarist")).toHaveLength(1);
 
     // Should not show location or bio
     expect(screen.queryByText("New York")).not.toBeInTheDocument();

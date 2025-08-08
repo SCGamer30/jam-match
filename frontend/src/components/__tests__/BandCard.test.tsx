@@ -7,19 +7,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { BandCard } from "../BandCard";
 import { Band } from "@/types/dashboard";
 import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { it } from "zod/locales";
-import { describe } from "node:test";
 
 const mockBand: Band = {
   id: "band-1",

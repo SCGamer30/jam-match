@@ -25,10 +25,47 @@ function getAuthHeaders(): HeadersInit {
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.error?.message || `HTTP ${response.status}`);
+    throw new Error(errorData.error?.message || response.statusText);
   }
   return response.json();
 }
+
+// Generic API utility functions
+export const api = {
+  async get<T>(endpoint: string): Promise<T> {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+    return handleResponse<T>(response);
+  },
+
+  async post<T>(endpoint: string, data?: any): Promise<T> {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: data ? JSON.stringify(data) : undefined,
+    });
+    return handleResponse<T>(response);
+  },
+
+  async put<T>(endpoint: string, data?: any): Promise<T> {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: data ? JSON.stringify(data) : undefined,
+    });
+    return handleResponse<T>(response);
+  },
+
+  async delete<T>(endpoint: string): Promise<T> {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+    return handleResponse<T>(response);
+  },
+};
 
 // User profile API
 export const userApi = {

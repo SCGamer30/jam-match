@@ -26,12 +26,43 @@ export interface AuthResponse {
 }
 
 /**
+ * Validate email format
+ */
+function validateEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Validate password strength
+ */
+function validatePassword(password: string): boolean {
+  return password.length >= 8;
+}
+
+/**
  * Sign up a new user with email and password
  */
 export async function signUp(
   email: string,
   password: string
 ): Promise<AuthResponse> {
+  // Validate email format
+  if (!validateEmail(email)) {
+    return {
+      user: null,
+      error: { message: "Invalid email format" },
+    };
+  }
+
+  // Validate password strength
+  if (!validatePassword(password)) {
+    return {
+      user: null,
+      error: { message: "Password must be at least 8 characters long" },
+    };
+  }
+
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -61,6 +92,14 @@ export async function signIn(
   email: string,
   password: string
 ): Promise<AuthResponse> {
+  // Validate email format
+  if (!validateEmail(email)) {
+    return {
+      user: null,
+      error: { message: "Invalid email format" },
+    };
+  }
+
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -105,27 +144,36 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
 /**
  * Get the current user session
  */
-export async function getCurrentUser(): Promise<AuthUser | null> {
+export async function getCurrentUser(): Promise<AuthResponse> {
   try {
     const {
       data: { user },
       error,
     } = await supabase.auth.getUser();
 
-    if (error || !user) {
-      return null;
+    if (error) {
+      return {
+        user: null,
+        error: { message: error.message },
+      };
     }
 
-    return user as AuthUser;
+    return { user: user as AuthUser, error: null };
   } catch (err) {
-    return null;
+    return {
+      user: null,
+      error: { message: "Failed to get current user" },
+    };
   }
 }
 
 /**
  * Get the current session
  */
-export async function getSession() {
+export async function getSession(): Promise<{
+  session: any | null;
+  error: AuthError | null;
+}> {
   try {
     const {
       data: { session },
@@ -133,12 +181,18 @@ export async function getSession() {
     } = await supabase.auth.getSession();
 
     if (error) {
-      return null;
+      return {
+        session: null,
+        error: { message: error.message },
+      };
     }
 
-    return session;
+    return { session, error: null };
   } catch (err) {
-    return null;
+    return {
+      session: null,
+      error: { message: "Failed to get session" },
+    };
   }
 }
 
@@ -164,7 +218,7 @@ export async function isAuthenticated(): Promise<boolean> {
  */
 export async function getAccessToken(): Promise<string | null> {
   try {
-    const session = await getSession();
+    const { session } = await getSession();
     return session?.access_token || null;
   } catch (err) {
     return null;

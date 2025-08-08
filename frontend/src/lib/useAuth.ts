@@ -33,9 +33,13 @@ export function useAuth(): UseAuthReturn {
 
     const initializeAuth = async () => {
       try {
-        const currentUser = await getCurrentUser();
+        const { user: currentUser, error } = await getCurrentUser();
         if (mounted) {
-          setUser(currentUser);
+          if (error) {
+            setError(error.message);
+          } else {
+            setUser(currentUser);
+          }
           setLoading(false);
         }
       } catch (err) {
