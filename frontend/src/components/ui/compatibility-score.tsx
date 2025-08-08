@@ -23,17 +23,18 @@ export function CompatibilityScore({
 
   // Determine color based on score
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-600 border-green-200 bg-green-50";
-    if (score >= 60) return "text-orange-600 border-orange-200 bg-orange-50";
-    if (score >= 40) return "text-yellow-600 border-yellow-200 bg-yellow-50";
-    return "text-red-600 border-red-200 bg-red-50";
+    if (score >= 80) return "text-primary border-primary/20 bg-primary/5";
+    if (score >= 60) return "text-chart-2 border-chart-2/20 bg-chart-2/5";
+    if (score >= 40)
+      return "text-accent-foreground border-accent-foreground/20 bg-accent-foreground/5";
+    return "text-destructive border-destructive/20 bg-destructive/5";
   };
 
   const getProgressColor = (score: number) => {
-    if (score >= 80) return "bg-green-500";
-    if (score >= 60) return "bg-orange-500";
-    if (score >= 40) return "bg-yellow-500";
-    return "bg-red-500";
+    if (score >= 80) return "bg-primary";
+    if (score >= 60) return "bg-chart-2";
+    if (score >= 40) return "bg-accent-foreground";
+    return "bg-destructive";
   };
 
   const sizeClasses = {
@@ -59,7 +60,7 @@ export function CompatibilityScore({
         )}
       >
         {/* Background circle */}
-        <div className="absolute inset-1 rounded-full bg-gray-100" />
+        <div className="absolute inset-1 rounded-full bg-muted" />
 
         {/* Progress circle */}
         <div
@@ -95,7 +96,7 @@ export function CompatibilityScore({
 
       {/* Label */}
       {showLabel && (
-        <span className="text-xs text-gray-600 font-medium text-center">
+        <span className="text-xs text-muted-foreground font-medium text-center">
           Compatibility
         </span>
       )}

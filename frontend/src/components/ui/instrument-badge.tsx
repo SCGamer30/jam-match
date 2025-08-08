@@ -55,7 +55,7 @@ export function InstrumentBadge({
     <Badge
       variant={variant}
       className={cn(
-        "inline-flex items-center gap-1 font-medium bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200",
+        "inline-flex items-center gap-1 font-medium bg-primary/10 text-primary hover:bg-primary/20 border-primary/20",
         sizeClasses[size],
         className
       )}
@@ -97,7 +97,7 @@ export function InstrumentBadgeList({
       {remainingCount > 0 && (
         <Badge
           variant="outline"
-          className="text-gray-600 border-gray-300 text-xs px-2 py-1"
+          className="text-muted-foreground border-border text-xs px-2 py-1"
         >
           +{remainingCount} more
         </Badge>
