@@ -58,13 +58,17 @@ export function MatchCard({
   };
 
   return (
-    <Card className={`hover:shadow-md transition-shadow ${className}`}>
-      <CardHeader className="pb-2 sm:pb-3">
+    <Card
+      className={`card-hover relative overflow-hidden bg-card/80 backdrop-blur-sm border-border shadow-lg ${className}`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-chart-2/5 via-primary/5 to-transparent"></div>
+      <div className="absolute inset-0 shimmer opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+      <CardHeader className="pb-2 sm:pb-3 relative z-10">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-            <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
+            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 ring-2 ring-primary/20 animate-pulse-glow">
               <AvatarImage src={user.avatar_url} alt={user.name} />
-              <AvatarFallback className="bg-primary/10 text-primary text-xs sm:text-sm">
+              <AvatarFallback className="bg-primary/20 text-primary text-xs sm:text-sm">
                 {user.name
                   .split(" ")
                   .map((n) => n[0])
@@ -96,12 +100,12 @@ export function MatchCard({
           <CompatibilityScore
             score={compatibility_score}
             size="sm"
-            className="sm:size-md"
+            className="sm:size-md animate-pulse-glow"
           />
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3 sm:space-y-4 pt-0">
+      <CardContent className="space-y-3 sm:space-y-4 pt-0 relative z-10">
         {/* Bio */}
         {user.bio && (
           <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
@@ -111,9 +115,9 @@ export function MatchCard({
 
         {/* Experience Level */}
         <div className="flex items-center gap-2">
-          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground animate-pulse" />
           <Badge
-            className={`text-xs ${getExperienceColor(
+            className={`text-xs smooth-transition hover:scale-105 ${getExperienceColor(
               user.experience || "beginner"
             )}`}
           >
@@ -144,25 +148,25 @@ export function MatchCard({
 
         {/* Compatibility Breakdown */}
         {breakdown && (
-          <div className="bg-muted/50 rounded-lg p-2 sm:p-3">
+          <div className="bg-accent/30 backdrop-blur-sm rounded-lg p-2 sm:p-3 border border-border/50">
             <h4 className="text-xs sm:text-sm font-medium text-foreground mb-1 sm:mb-2">
               Compatibility Breakdown
             </h4>
             <div className="grid grid-cols-3 gap-1 sm:gap-2 text-xs">
               <div className="text-center">
-                <div className="font-semibold text-foreground text-xs sm:text-sm">
+                <div className="font-semibold text-foreground text-xs sm:text-sm animate-pulse">
                   {breakdown.locationScore || 0}/50
                 </div>
                 <div className="text-muted-foreground text-xs">Location</div>
               </div>
               <div className="text-center">
-                <div className="font-semibold text-foreground text-xs sm:text-sm">
+                <div className="font-semibold text-foreground text-xs sm:text-sm animate-pulse animation-delay-1000">
                   {breakdown.genreScore || 0}/30
                 </div>
                 <div className="text-muted-foreground text-xs">Genres</div>
               </div>
               <div className="text-center">
-                <div className="font-semibold text-foreground text-xs sm:text-sm">
+                <div className="font-semibold text-foreground text-xs sm:text-sm animate-pulse animation-delay-2000">
                   {breakdown.experienceScore || 0}/20
                 </div>
                 <div className="text-muted-foreground text-xs">Experience</div>
@@ -173,11 +177,12 @@ export function MatchCard({
 
         {/* Reasoning */}
         {reasoning && (
-          <div className="bg-primary/5 border border-primary/20 rounded-lg p-2 sm:p-3">
-            <h4 className="text-xs sm:text-sm font-medium text-primary mb-1">
+          <div className="bg-primary/10 border border-primary/30 rounded-lg p-2 sm:p-3 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-chart-2/5"></div>
+            <h4 className="text-xs sm:text-sm font-medium text-primary mb-1 relative z-10">
               Why you match
             </h4>
-            <p className="text-xs sm:text-sm text-primary/80 line-clamp-3">
+            <p className="text-xs sm:text-sm text-primary/80 line-clamp-3 relative z-10">
               {reasoning}
             </p>
           </div>
@@ -190,7 +195,7 @@ export function MatchCard({
               variant="outline"
               size="sm"
               onClick={() => onViewProfile(user.id)}
-              className="flex-1 text-xs sm:text-sm"
+              className="flex-1 text-xs sm:text-sm border-border hover:bg-accent btn-enhanced"
             >
               <User className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
               <span className="hidden xs:inline">View Profile</span>
@@ -202,7 +207,7 @@ export function MatchCard({
               variant="default"
               size="sm"
               onClick={() => onRequestAIAnalysis(user.id)}
-              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground text-xs sm:text-sm"
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground text-xs sm:text-sm btn-enhanced animate-pulse-glow"
             >
               <Star className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
               <span className="hidden xs:inline">AI Analysis</span>

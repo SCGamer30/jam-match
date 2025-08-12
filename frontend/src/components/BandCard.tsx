@@ -77,19 +77,25 @@ export function BandCard({
   const averageCompatibility = calculateAverageCompatibility();
 
   return (
-    <Card className={`hover:shadow-md transition-shadow ${className}`}>
-      <CardHeader className="pb-2 sm:pb-3">
+    <Card
+      className={`card-hover relative overflow-hidden bg-card/80 backdrop-blur-sm border-border shadow-lg ${className}`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-chart-2/5 to-transparent"></div>
+      <CardHeader className="pb-2 sm:pb-3 relative z-10">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <CardTitle className="text-base sm:text-lg text-gray-900 mb-1 truncate">
+            <CardTitle className="text-base sm:text-lg text-foreground mb-1 truncate">
               {getBandName()}
             </CardTitle>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>Formed {formatFormationDate(band.formation_date)}</span>
               </div>
-              <Badge variant="outline" className="self-start sm:ml-2 text-xs">
+              <Badge
+                variant="outline"
+                className="self-start sm:ml-2 text-xs border-primary/30 text-primary"
+              >
                 {band.status}
               </Badge>
             </div>
@@ -97,17 +103,17 @@ export function BandCard({
           <CompatibilityScore
             score={averageCompatibility}
             size="sm"
-            className="sm:size-md"
+            className="sm:size-md animate-pulse-glow"
           />
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3 sm:space-y-4 pt-0">
+      <CardContent className="space-y-3 sm:space-y-4 pt-0 relative z-10">
         {/* Band Members */}
         <div>
           <div className="flex items-center gap-2 mb-2 sm:mb-3">
-            <Users className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
-            <h4 className="text-xs sm:text-sm font-medium text-gray-700">
+            <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+            <h4 className="text-xs sm:text-sm font-medium text-foreground">
               Band Members
             </h4>
           </div>
@@ -116,15 +122,15 @@ export function BandCard({
             {band.members.map((member) => (
               <div
                 key={member.id}
-                className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+                className={`flex items-center gap-2 p-2 rounded-lg smooth-transition ${
                   member.id === currentUserId
-                    ? "bg-orange-50 border border-orange-200"
-                    : "bg-gray-50"
+                    ? "bg-primary/10 border border-primary/30 animate-pulse-glow"
+                    : "bg-accent/50 hover:bg-accent/70"
                 }`}
               >
                 <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
                   <AvatarImage src={member.avatar_url} alt={member.name} />
-                  <AvatarFallback className="bg-orange-100 text-orange-800 text-xs">
+                  <AvatarFallback className="bg-primary/20 text-primary text-xs">
                     {member.name
                       .split(" ")
                       .map((n) => n[0])
@@ -137,11 +143,11 @@ export function BandCard({
                     <span className="text-xs">
                       {getRoleIcon(member.primary_role)}
                     </span>
-                    <span className="text-xs sm:text-sm font-medium text-gray-900 truncate">
+                    <span className="text-xs sm:text-sm font-medium text-foreground truncate">
                       {member.id === currentUserId ? "You" : member.name}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-600 capitalize">
+                  <div className="text-xs text-muted-foreground capitalize">
                     {member.primary_role}
                   </div>
                 </div>
@@ -153,8 +159,8 @@ export function BandCard({
         {/* Shared Genres */}
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Music className="h-4 w-4 text-gray-600" />
-            <h4 className="text-sm font-medium text-gray-700">
+            <Music className="h-4 w-4 text-muted-foreground" />
+            <h4 className="text-sm font-medium text-foreground">
               Shared Interests
             </h4>
           </div>
@@ -175,13 +181,17 @@ export function BandCard({
             return sharedGenres.length > 0 ? (
               <div className="flex flex-wrap gap-1">
                 {sharedGenres.map((genre) => (
-                  <Badge key={genre} variant="outline" className="text-xs">
+                  <Badge
+                    key={genre}
+                    variant="outline"
+                    className="text-xs border-chart-2/30 text-chart-2 hover:bg-chart-2/10 smooth-transition"
+                  >
                     {genre}
                   </Badge>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 Exploring diverse musical styles
               </p>
             );
@@ -195,7 +205,7 @@ export function BandCard({
               variant="outline"
               size="sm"
               onClick={() => onViewBand(band.id)}
-              className="flex-1 text-xs sm:text-sm"
+              className="flex-1 text-xs sm:text-sm border-border hover:bg-accent btn-enhanced"
             >
               <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
               <span className="hidden xs:inline">View Band</span>
@@ -207,7 +217,7 @@ export function BandCard({
               variant="default"
               size="sm"
               onClick={() => onOpenChat(band.id)}
-              className="flex-1 bg-orange-200 hover:bg-orange-300 text-orange-900 text-xs sm:text-sm"
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground text-xs sm:text-sm btn-enhanced animate-pulse-glow"
             >
               <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
               Chat

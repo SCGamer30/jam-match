@@ -320,15 +320,16 @@ function DashboardContent() {
           <div className="space-y-8">
             {/* Status Overview */}
             <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
-              <Card className="bg-card/80 backdrop-blur-sm border-border shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-2 sm:pb-3">
+              <Card className="bg-card/80 backdrop-blur-sm border-border shadow-lg card-hover relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
+                <CardHeader className="pb-2 sm:pb-3 relative z-10">
                   <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                     Profile Status
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0">
+                <CardContent className="pt-0 relative z-10">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary animate-pulse" />
                     <span className="text-base sm:text-lg font-semibold text-foreground">
                       Complete
                     </span>
@@ -339,15 +340,16 @@ function DashboardContent() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-card/80 backdrop-blur-sm border-border shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-2 sm:pb-3">
+              <Card className="bg-card/80 backdrop-blur-sm border-border shadow-lg card-hover relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-chart-2/10 to-transparent"></div>
+                <CardHeader className="pb-2 sm:pb-3 relative z-10">
                   <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                     Active Bands
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0">
+                <CardContent className="pt-0 relative z-10">
                   <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 sm:h-5 sm:w-5 text-chart-2" />
+                    <Users className="h-4 w-4 sm:h-5 sm:w-5 text-chart-2 animate-pulse animation-delay-1000" />
                     <span className="text-base sm:text-lg font-semibold text-foreground">
                       {bands.length}
                     </span>
@@ -362,15 +364,16 @@ function DashboardContent() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-card/80 backdrop-blur-sm border-border shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-2 sm:pb-3">
+              <Card className="bg-card/80 backdrop-blur-sm border-border shadow-lg card-hover relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent-foreground/10 to-transparent"></div>
+                <CardHeader className="pb-2 sm:pb-3 relative z-10">
                   <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                     Potential Matches
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0">
+                <CardContent className="pt-0 relative z-10">
                   <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-accent-foreground" />
+                    <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-accent-foreground animate-pulse animation-delay-2000" />
                     <span className="text-base sm:text-lg font-semibold text-foreground">
                       {matches.length}
                     </span>

@@ -20,14 +20,14 @@ export default function ChatDemoPage() {
     {
       id: "1",
       sender: "Riley Martinez",
-      content: "Hey! I saw we matched on JamMatch. Love your guitar style!",
+      content: "Hey! I saw we matched on JamMatch. Love your guitar style! 🎸",
       timestamp: new Date(Date.now() - 3600000),
       isCurrentUser: false,
     },
     {
       id: "2",
       sender: "You",
-      content: "Thanks! Your vocals are amazing. Want to jam sometime?",
+      content: "Thanks! Your vocals are amazing. Want to jam sometime? 🎤",
       timestamp: new Date(Date.now() - 3000000),
       isCurrentUser: true,
     },
@@ -35,16 +35,23 @@ export default function ChatDemoPage() {
       id: "3",
       sender: "Riley Martinez",
       content:
-        "Absolutely! I'm free this weekend. Maybe we can work on that indie rock sound?",
+        "Absolutely! I'm free this weekend. Maybe we can work on that indie rock sound? 🎵",
       timestamp: new Date(Date.now() - 2400000),
       isCurrentUser: false,
     },
     {
       id: "4",
       sender: "You",
-      content: "Perfect! I have a few song ideas we could explore.",
+      content: "Perfect! I have a few song ideas we could explore. ✨",
       timestamp: new Date(Date.now() - 1800000),
       isCurrentUser: true,
+    },
+    {
+      id: "5",
+      sender: "Riley Martinez",
+      content: "Can't wait! This is going to be epic! 🔥",
+      timestamp: new Date(Date.now() - 900000),
+      isCurrentUser: false,
     },
   ]);
 
@@ -81,11 +88,19 @@ export default function ChatDemoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-accent/30 to-secondary p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-background via-accent/30 to-secondary p-4 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+        <div className="absolute bottom-20 left-10 w-72 h-72 bg-chart-2/10 rounded-full mix-blend-multiply filter blur-xl opacity-25 animate-pulse animation-delay-2000"></div>
+      </div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Band Chat</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2 animate-gradient">
+            Band Chat
+          </h1>
           <p className="text-muted-foreground">
             Connect with your matched musicians
           </p>
@@ -94,16 +109,17 @@ export default function ChatDemoPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Chat List Sidebar */}
           <div className="lg:col-span-1">
-            <Card className="bg-card/90 backdrop-blur-sm border-border shadow-lg">
-              <CardHeader>
+            <Card className="bg-card/90 backdrop-blur-sm border-border shadow-lg card-hover relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
+              <CardHeader className="relative z-10">
                 <CardTitle className="text-foreground flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
+                  <Users className="h-5 w-5 text-primary animate-pulse" />
                   Active Chats
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
-                  <Avatar>
+              <CardContent className="space-y-3 relative z-10">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20 animate-pulse-glow">
+                  <Avatar className="ring-2 ring-primary/30">
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       RM
                     </AvatarFallback>
@@ -116,11 +132,11 @@ export default function ChatDemoPage() {
                       Vocalist • 92% match
                     </p>
                   </div>
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors cursor-pointer">
-                  <Avatar>
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 smooth-transition cursor-pointer card-hover">
+                  <Avatar className="ring-2 ring-chart-2/30">
                     <AvatarFallback className="bg-chart-2 text-primary-foreground">
                       TK
                     </AvatarFallback>

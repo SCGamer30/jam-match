@@ -36,17 +36,23 @@ export default function LandingPage() {
 
       {/* Floating Music Notes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 text-primary/20 text-6xl animate-bounce animation-delay-1000">
+        <div className="absolute top-1/4 left-1/4 text-primary/30 text-6xl animate-music-bounce animation-delay-1000">
           ♪
         </div>
-        <div className="absolute top-1/3 right-1/4 text-chart-2/20 text-4xl animate-bounce animation-delay-3000">
+        <div className="absolute top-1/3 right-1/4 text-chart-2/30 text-4xl animate-music-bounce animation-delay-3000">
           ♫
         </div>
-        <div className="absolute bottom-1/4 left-1/3 text-primary/15 text-5xl animate-bounce animation-delay-2000">
+        <div className="absolute bottom-1/4 left-1/3 text-primary/25 text-5xl animate-music-bounce animation-delay-2000">
           ♬
         </div>
-        <div className="absolute top-1/2 right-1/3 text-accent-foreground/20 text-3xl animate-bounce animation-delay-4000">
+        <div className="absolute top-1/2 right-1/3 text-accent-foreground/30 text-3xl animate-music-bounce animation-delay-4000">
           ♩
+        </div>
+        <div className="absolute top-3/4 right-1/5 text-chart-2/20 text-4xl animate-music-bounce animation-delay-1500">
+          ♭
+        </div>
+        <div className="absolute top-1/5 left-1/5 text-primary/20 text-3xl animate-music-bounce animation-delay-2500">
+          ♯
         </div>
       </div>
 
@@ -62,9 +68,7 @@ export default function LandingPage() {
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
             Find Your Perfect
-            <span className="bg-gradient-to-r from-primary via-chart-2 to-primary bg-clip-text text-transparent block">
-              Band Members
-            </span>
+            <span className="animate-gradient block">Band Members</span>
           </h1>
 
           <p className="text-xl sm:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -77,7 +81,7 @@ export default function LandingPage() {
             <Button
               asChild
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg font-semibold rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300 border-0"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg font-semibold rounded-full shadow-2xl btn-enhanced animate-pulse-glow border-0"
             >
               <Link href="/dashboard" className="flex items-center gap-2">
                 <Play className="h-5 w-5" />
@@ -97,9 +101,10 @@ export default function LandingPage() {
 
         {/* Features Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          <Card className="bg-card/80 backdrop-blur-lg border border-border hover:bg-card/90 transition-all duration-300 group shadow-lg hover:shadow-xl">
-            <CardHeader className="text-center pb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary to-chart-2 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+          <Card className="bg-card/80 backdrop-blur-lg border border-border card-hover group shadow-lg relative overflow-hidden">
+            <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <CardHeader className="text-center pb-4 relative z-10">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-chart-2 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg animate-pulse-glow">
                 <Zap className="h-8 w-8 text-primary-foreground" />
               </div>
               <CardTitle className="text-foreground text-xl font-bold">
@@ -112,9 +117,10 @@ export default function LandingPage() {
             </CardHeader>
           </Card>
 
-          <Card className="bg-card/80 backdrop-blur-lg border border-border hover:bg-card/90 transition-all duration-300 group shadow-lg hover:shadow-xl">
-            <CardHeader className="text-center pb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-chart-2 to-primary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+          <Card className="bg-card/80 backdrop-blur-lg border border-border card-hover group shadow-lg relative overflow-hidden">
+            <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <CardHeader className="text-center pb-4 relative z-10">
+              <div className="w-16 h-16 bg-gradient-to-br from-chart-2 to-primary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg animate-pulse-glow animation-delay-1000">
                 <MessageCircle className="h-8 w-8 text-primary-foreground" />
               </div>
               <CardTitle className="text-foreground text-xl font-bold">
@@ -127,9 +133,10 @@ export default function LandingPage() {
             </CardHeader>
           </Card>
 
-          <Card className="bg-card/80 backdrop-blur-lg border border-border hover:bg-card/90 transition-all duration-300 group shadow-lg hover:shadow-xl">
-            <CardHeader className="text-center pb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-accent-foreground to-primary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+          <Card className="bg-card/80 backdrop-blur-lg border border-border card-hover group shadow-lg relative overflow-hidden">
+            <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <CardHeader className="text-center pb-4 relative z-10">
+              <div className="w-16 h-16 bg-gradient-to-br from-accent-foreground to-primary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg animate-pulse-glow animation-delay-2000">
                 <Users className="h-8 w-8 text-primary-foreground" />
               </div>
               <CardTitle className="text-foreground text-xl font-bold">
@@ -262,12 +269,13 @@ export default function LandingPage() {
 
         {/* CTA Section */}
         <div className="text-center">
-          <Card className="max-w-4xl mx-auto bg-card/90 backdrop-blur-xl border border-border shadow-2xl">
-            <CardHeader className="pb-6">
+          <Card className="max-w-4xl mx-auto bg-card/90 backdrop-blur-xl border border-border shadow-2xl card-hover relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-chart-2/5 to-accent-foreground/5"></div>
+            <CardHeader className="pb-6 relative z-10">
               <div className="flex items-center justify-center gap-2 mb-4">
-                <Heart className="h-6 w-6 text-primary" />
-                <Star className="h-8 w-8 text-chart-2" />
-                <Heart className="h-6 w-6 text-primary" />
+                <Heart className="h-6 w-6 text-primary animate-pulse" />
+                <Star className="h-8 w-8 text-chart-2 animate-pulse animation-delay-1000" />
+                <Heart className="h-6 w-6 text-primary animate-pulse animation-delay-2000" />
               </div>
               <CardTitle className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                 Ready to Find Your Musical Soulmates?
@@ -277,12 +285,12 @@ export default function LandingPage() {
                 bandmates and are creating amazing music together.
               </CardDescription>
             </CardHeader>
-            <CardContent className="pb-8">
+            <CardContent className="pb-8 relative z-10">
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
                 <Button
                   asChild
                   size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-semibold rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-semibold rounded-full shadow-2xl btn-enhanced animate-pulse-glow"
                 >
                   <Link
                     href="/profile/setup"
@@ -296,7 +304,7 @@ export default function LandingPage() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-2 border-border text-foreground hover:bg-accent px-12 py-4 text-lg font-semibold rounded-full backdrop-blur-sm"
+                  className="border-2 border-border text-foreground hover:bg-accent px-12 py-4 text-lg font-semibold rounded-full backdrop-blur-sm btn-enhanced"
                 >
                   <Link href="/dashboard">Explore Dashboard</Link>
                 </Button>
@@ -304,15 +312,15 @@ export default function LandingPage() {
 
               <div className="flex items-center justify-center gap-8 text-muted-foreground text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                   <span>Free to join</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-chart-2 rounded-full"></div>
+                  <div className="w-2 h-2 bg-chart-2 rounded-full animate-pulse animation-delay-1000"></div>
                   <span>AI-powered matching</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-accent-foreground rounded-full"></div>
+                  <div className="w-2 h-2 bg-accent-foreground rounded-full animate-pulse animation-delay-2000"></div>
                   <span>Instant connections</span>
                 </div>
               </div>

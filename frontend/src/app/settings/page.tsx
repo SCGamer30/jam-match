@@ -88,34 +88,51 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-accent/30 to-secondary p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-background via-accent/30 to-secondary p-4 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-72 h-72 bg-chart-2/10 rounded-full mix-blend-multiply filter blur-xl opacity-25 animate-pulse animation-delay-2000"></div>
+      </div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Settings</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2 animate-gradient">
+            Settings
+          </h1>
           <p className="text-muted-foreground">
             Customize your JamMatch experience
           </p>
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-card/50 backdrop-blur-sm">
-            <TabsTrigger value="profile" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-4 bg-card/80 backdrop-blur-md border border-border shadow-lg">
+            <TabsTrigger
+              value="profile"
+              className="flex items-center gap-2 smooth-transition data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               <User className="h-4 w-4" />
               Profile
             </TabsTrigger>
-            <TabsTrigger value="music" className="flex items-center gap-2">
+            <TabsTrigger
+              value="music"
+              className="flex items-center gap-2 smooth-transition data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               <Music className="h-4 w-4" />
               Music
             </TabsTrigger>
             <TabsTrigger
               value="notifications"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 smooth-transition data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               <Bell className="h-4 w-4" />
               Notifications
             </TabsTrigger>
-            <TabsTrigger value="privacy" className="flex items-center gap-2">
+            <TabsTrigger
+              value="privacy"
+              className="flex items-center gap-2 smooth-transition data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               <Shield className="h-4 w-4" />
               Privacy
             </TabsTrigger>
@@ -123,14 +140,15 @@ export default function SettingsPage() {
 
           {/* Profile Settings */}
           <TabsContent value="profile" className="space-y-6">
-            <Card className="bg-card/90 backdrop-blur-sm border-border shadow-lg">
-              <CardHeader>
+            <Card className="bg-card/90 backdrop-blur-sm border-border shadow-lg card-hover relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
+              <CardHeader className="relative z-10">
                 <CardTitle className="text-foreground flex items-center gap-2">
-                  <User className="h-5 w-5 text-primary" />
+                  <User className="h-5 w-5 text-primary animate-pulse" />
                   Profile Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-foreground">
@@ -400,7 +418,7 @@ export default function SettingsPage() {
                   <div>
                     <Label className="text-foreground">Band Invites</Label>
                     <p className="text-sm text-muted-foreground">
-                      Get notified when you're invited to join a band
+                      Get notified when you&apos;re invited to join a band
                     </p>
                   </div>
                   <Switch

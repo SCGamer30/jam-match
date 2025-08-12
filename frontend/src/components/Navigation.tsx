@@ -25,16 +25,17 @@ export function Navigation() {
   // Show navigation on all pages now
 
   return (
-    <nav className="bg-card/95 backdrop-blur-md border-b border-border shadow-sm sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-3 sm:px-4">
+    <nav className="bg-card/95 backdrop-blur-md border-b border-border shadow-sm sticky top-0 z-50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-chart-2/5 to-accent-foreground/5"></div>
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 relative z-10">
         <div className="flex justify-between items-center h-14 sm:h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <Music className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
-              <Sparkles className="h-3 w-3 text-chart-2 absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Music className="h-6 w-6 text-primary group-hover:scale-110 smooth-transition animate-pulse" />
+              <Sparkles className="h-3 w-3 text-chart-2 absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 smooth-transition animate-pulse animation-delay-1000" />
             </div>
-            <span className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-300">
+            <span className="font-bold text-lg text-foreground group-hover:text-primary smooth-transition">
               JamMatch
             </span>
           </Link>
@@ -45,11 +46,11 @@ export function Navigation() {
               asChild
               variant={isActive("/") ? "default" : "ghost"}
               size="sm"
-              className={
+              className={`smooth-transition ${
                 isActive("/")
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "hover:bg-accent hover:text-accent-foreground"
-              }
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse-glow"
+                  : "hover:bg-accent hover:text-accent-foreground btn-enhanced"
+              }`}
             >
               <Link href="/">Home</Link>
             </Button>
@@ -57,11 +58,11 @@ export function Navigation() {
               asChild
               variant={isActive("/dashboard") ? "default" : "ghost"}
               size="sm"
-              className={
+              className={`smooth-transition ${
                 isActive("/dashboard")
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "hover:bg-accent hover:text-accent-foreground"
-              }
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse-glow"
+                  : "hover:bg-accent hover:text-accent-foreground btn-enhanced"
+              }`}
             >
               <Link href="/dashboard" className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
@@ -72,11 +73,11 @@ export function Navigation() {
               asChild
               variant={isActive("/profile/setup") ? "default" : "ghost"}
               size="sm"
-              className={
+              className={`smooth-transition ${
                 isActive("/profile/setup")
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "hover:bg-accent hover:text-accent-foreground"
-              }
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse-glow"
+                  : "hover:bg-accent hover:text-accent-foreground btn-enhanced"
+              }`}
             >
               <Link href="/profile/setup" className="flex items-center gap-1">
                 <User className="h-4 w-4" />
@@ -87,11 +88,11 @@ export function Navigation() {
               asChild
               variant={isActive("/chat") ? "default" : "ghost"}
               size="sm"
-              className={
+              className={`smooth-transition ${
                 isActive("/chat")
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "hover:bg-accent hover:text-accent-foreground"
-              }
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse-glow"
+                  : "hover:bg-accent hover:text-accent-foreground btn-enhanced"
+              }`}
             >
               <Link href="/chat/demo" className="flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" />
@@ -102,11 +103,11 @@ export function Navigation() {
               asChild
               variant={isActive("/settings") ? "default" : "ghost"}
               size="sm"
-              className={
+              className={`smooth-transition ${
                 isActive("/settings")
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "hover:bg-accent hover:text-accent-foreground"
-              }
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90 animate-pulse-glow"
+                  : "hover:bg-accent hover:text-accent-foreground btn-enhanced"
+              }`}
             >
               <Link href="/settings" className="flex items-center gap-1">
                 <Settings className="h-4 w-4" />
